@@ -7,6 +7,7 @@ import tqdm
 import asyncio
 import os
 import scandir
+from utils.utils import walk_dir
 
 # Paths
 input_base_dir = '/mnt/d/prjs/face_reco/11-785-fall-20-homework-2-part-2/'
@@ -53,16 +54,6 @@ async def process_and_save_image(input_path, output_path, pbar):
 		print(f"Error processing {input_path}: {e}")
 	finally:
 		pbar.update(1)
-
-def walk_dir(dir):
-	for entry in scandir.scandir(dir):
-		if entry.is_dir():
-			for file in scandir.scandir(entry.path):
-				if file.is_file():
-					yield file.path, f"{entry.name}/{file.name}"
-		elif entry.is_file():
-			yield entry.path, entry.name
-
 
 async def process_directory(input_dir, output_dir, num_workers):
 	# Ensure the output directory exists
